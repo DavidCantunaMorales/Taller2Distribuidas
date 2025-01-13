@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  taller2:
+    image: mysql:latest
+    container_name: taller2
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: examenDb
+    ports:
+      - "3358:3306"
+    networks:
+      - examen-net
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  examen-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: examen-app-container
+    ports:
+      - "8002:8002"
+    depends_on:
+      - taller2
+    networks:
+      - examen-net
+
+networks:
+  examen-net:
+
+
+volumes:
+  mysql-data:
